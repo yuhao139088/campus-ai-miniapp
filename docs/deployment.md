@@ -16,7 +16,11 @@ npm run dev:showcase
 
 TypeScript由项目脚本显式编译：setup自动生成11个运行JS及sourceMap；开发期间运行`npm run dev:miniapp`监听TS修改。生成文件位于TS旁并由Git忽略，IDE直接加载JS，不再依赖其TypeScript插件。源码包需先setup/build；后续交付包会附带生成文件，便于直接导入。
 
-2026-10-16连接用户开启的IDE服务端口59411并确认微信登录；重启后工具自动分配31688。修复缺失JS后自动化已读取原生首页4项服务、无网络错误，官方工具日志显示simulator launch success。Stable工具的导航/截图RPC仍存在超时，完整模拟器和真机验收未完成。
+2026-10-16修复缺失JS后，实际原生首页显示4项服务，官方工具日志显示simulator launch success。已按用户授权独立安装官方Nightly 2.02.2610142，保留Stable；用户人工确认助手可跳转并生成AI办理计划。完整材料、表单、任务和真机验收另见verification.md。
+
+本机Nightly位于`E:/Program Files (x86)/Tencent/WeChatDevToolsNightly`，自带`wechatide.cmd`与`resources/app.asar.unpacked/wechatide-skill`。使用内置SKILL.md与命令help中的实际工具名称；0.3.14采用`wechatide -c Codex 工具名`。CLI服务端口重启后可能变化，不要固定使用此前59411或31688。
+
+当前自动化在独立最小原生页面也复现超时，覆盖基础库3.8.6和3.17.4；内置MPPage.getCurrent报告页面元数据为空。停止反复修改业务代码，采用人工验证并保留工具异常证据。授权、登录和项目实际运行成功，与自动化全流程通过是不同状态。
 
 ## SQL与文件存储
 
