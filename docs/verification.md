@@ -14,10 +14,10 @@
 | 云私有上传 | 通过 | pgstore桶public=false，真实样本上传 |
 | 实时AI与视觉 | 通过 | tools/verify-live.mjs，live / vision / confirmed / 100% |
 | Docker配置 | 通过 | docker compose config --quiet |
-| Docker本机启动 | 待完成 | Desktop系统socket访问失败，守护进程不可用 |
+| Docker构建与启动 | GitHub CI通过 | 全新Linux环境双服务build/up --wait，代理health与网页curl成功；本机Desktop另有socket故障 |
 | 微信IDE整包/模拟器/真机 | 待完成 | CLI服务端口与IDE通信未建立 |
 | 真实微信身份/订阅消息 | 待接入 | AppSecret或身份云函数、模板与授权待配置 |
 | 平台AI扩展 | 静态29条通过 | build/execute未通过，不视为最终验收 |
 | Image-2.5资源 | 外部阻塞 | 官方CLI实际请求上游502，当前临时原创图 |
 
-密钥扫描、依赖审计和GitHub CI的最终结果随提交更新。原始本地日志和交接资料保存在被忽略的AI交接文件夹，不公开包含临时票据或个人配置的日志。
+首次公开提交前，157个跟踪文件密钥扫描通过；服务端与演示台生产依赖经官方npm registry审计为0漏洞。GitHub Actions首次主分支运行38903549999全部通过，包含依赖安装、测试、类型、构建、密钥扫描与Docker启动。原始本地日志和交接资料保存在被忽略的AI交接文件夹，不公开包含临时票据或个人配置的日志。

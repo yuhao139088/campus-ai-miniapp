@@ -27,7 +27,7 @@ docker compose up --build -d --wait
 
 8080提供演示台及同源API代理，8787为后端，仅绑定本机。命名卷campus-data保留本地模式的数据；SQL模式使用CloudBase。关闭：`docker compose down`，保留卷；不要使用-v删除数据。
 
-当前主机Docker Desktop启动遇到sailor-ingest.sock系统访问错误，未完成本机容器启动验收；Compose语法校验通过，GitHub CI另有Docker构建和启动检查。不要将配置校验等同容器运行通过。
+GitHub Actions全新Linux环境已通过双服务Docker构建、启动与代理health/网页访问。当前Windows主机Docker Desktop另有sailor-ingest.sock系统访问错误；这不影响CI中已验证的容器结果。
 
 ## 服务器阶段
 
