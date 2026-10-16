@@ -8,11 +8,12 @@
     "test:server": "npm --prefix server test",
     "dev:showcase": "npm --prefix showcase run dev",
     "build:showcase": "npm --prefix showcase run build",
-    "setup": "npm --prefix server ci && npm --prefix showcase ci && npm --prefix miniapp ci",
+    "setup": "npm --prefix server ci && npm --prefix showcase ci && npm --prefix miniapp ci && npm --prefix miniapp run build",
     "typecheck": "npm --prefix miniapp run typecheck && npm --prefix showcase run typecheck && node miniapp/node_modules/typescript/bin/tsc -p packages/shared",
     "check:miniapp": "node tools/check-miniapp.mjs",
     "test": "npm --prefix server test",
-    "build": "npm --prefix miniapp run build && npm --prefix showcase run build"
+    "build": "npm --prefix miniapp run build && npm --prefix showcase run build",
+    "dev:miniapp": "npm --prefix miniapp run dev"
   },
   "keywords": [],
   "author": "",

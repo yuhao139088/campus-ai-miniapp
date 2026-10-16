@@ -21,6 +21,12 @@ tools/watermarks-remover-main/
 showcase/reactbits-source.json
 *.tsbuildinfo
 miniapp/project.private.config.json
+miniapp/app.js
+miniapp/config.js
+miniapp/pages/**/*.js
+miniapp/utils/**/*.js
+miniapp/custom-tab-bar/**/*.js
+miniapp/**/*.js.map
 
 .agents/skills/**
 !.agents/skills/README.md

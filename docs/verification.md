@@ -8,6 +8,7 @@
 | 服务端回归 | 通过 | server/test：场景、异常、授权、持久化、SQL适配 |
 | 原生页面结构 | 通过 | tools/check-miniapp.mjs，7页+AppID+8张tab图标 |
 | WXML / WXSS | 通过 | 本机微信官方wcc/wcsc执行退出0 |
+| 原生首页启动 | 通过 | 官方automator读取home路径、4项真实服务、error为空；日志simulator launch success |
 | React生产构建 | 通过 | Vite生产产物 |
 | 浏览器390px流程 | 通过 | Playwright实时AI→材料→确认→任务→提醒，无JS错误/横向溢出 |
 | PostgreSQL | 通过 | CLI迁移Succeed，SQL行读写/清理，十表RLS |
@@ -15,7 +16,7 @@
 | 实时AI与视觉 | 通过 | tools/verify-live.mjs，live / vision / confirmed / 100% |
 | Docker配置 | 通过 | docker compose config --quiet |
 | Docker构建与启动 | GitHub CI通过 | 全新Linux环境双服务build/up --wait，代理health与网页curl成功；本机Desktop另有socket故障 |
-| 微信IDE整包/模拟器/真机 | 待完成 | CLI服务端口与IDE通信未建立 |
+| 微信完整模拟器流程/真机 | 待完成 | CLI已连接、首页已运行；Stable导航与截图RPC连续超时，正等待Nightly方案选择 |
 | 真实微信身份/订阅消息 | 待接入 | AppSecret或身份云函数、模板与授权待配置 |
 | 平台AI扩展 | 静态29条通过 | build/execute未通过，不视为最终验收 |
 | Image-2.5资源 | 外部阻塞 | 官方CLI实际请求上游502，当前临时原创图 |

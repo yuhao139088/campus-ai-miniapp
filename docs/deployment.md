@@ -14,6 +14,10 @@ npm run dev:showcase
 
 微信开发者工具导入`miniapp/`，AppID已配置`wx71016248d99d9bd4`。`miniapp/config.ts`默认本机127.0.0.1地址、演示身份；真机无法访问电脑的127.0.0.1，部署后替换为自己的HTTPS服务域名，在小程序后台配置request/uploadFile合法域名。普通小程序不需要平台AI开发模式扩展。
 
+TypeScript由项目脚本显式编译：setup自动生成11个运行JS及sourceMap；开发期间运行`npm run dev:miniapp`监听TS修改。生成文件位于TS旁并由Git忽略，IDE直接加载JS，不再依赖其TypeScript插件。源码包需先setup/build；后续交付包会附带生成文件，便于直接导入。
+
+2026-10-16连接用户开启的IDE服务端口59411并确认微信登录；重启后工具自动分配31688。修复缺失JS后自动化已读取原生首页4项服务、无网络错误，官方工具日志显示simulator launch success。Stable工具的导航/截图RPC仍存在超时，完整模拟器和真机验收未完成。
+
 ## SQL与文件存储
 
 目标环境`test1-d8gfuke7sfcd0a6d6`、地域ap-shanghai、PostgreSQL。迁移与操作步骤见`cloudbase/README.md`。私钥仅注入后端`CLOUDBASE_PG_API_KEY`，设置`STORAGE_MODE=cloudbase-sql`。

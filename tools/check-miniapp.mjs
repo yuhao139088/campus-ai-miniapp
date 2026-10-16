@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
+import vm from "node:vm";
 const root = path.resolve("miniapp");
 const read = (p) =>
   JSON.parse(
@@ -45,3 +46,50 @@ for (const ext of ["ts", "wxml", "wxss"])
 console.log(
   `Miniapp: ${app.pages.length} pages, AppID, native tabBar and local resources passed.`,
 );
+
+// Validate the actual CommonJS runtime files used by DevTools, not just TS types.
+const modules = new Map();
+const registrations = { app: 0, pages: 0, components: 0 };
+function load(file) {
+  const absolute = path.resolve(file);
+  assert.ok(
+    absolute.startsWith(root + path.sep),
+    "Runtime import escaped miniapp",
+  );
+  if (modules.has(absolute)) return modules.get(absolute).exports;
+  assert.ok(
+    fs.existsSync(absolute),
+    `Missing runtime JavaScript ${absolute}; run npm --prefix miniapp run build`,
+  );
+  const module = { exports: {} };
+  modules.set(absolute, module);
+  const register = (kind) => (definition) => {
+    assert.ok(definition && typeof definition === "object");
+    registrations[kind]++;
+  };
+  const run = vm.runInThisContext(
+    `(function(require,module,exports,App,Page,Component){${fs.readFileSync(absolute, "utf8")}\n})`,
+    { filename: absolute },
+  );
+  run(
+    (id) => {
+      assert.ok(id.startsWith("."), "Unexpected runtime dependency");
+      return load(path.resolve(path.dirname(absolute), id + ".js"));
+    },
+    module,
+    module.exports,
+    register("app"),
+    register("pages"),
+    register("components"),
+  );
+  return module.exports;
+}
+load(path.join(root, "app.js"));
+for (const page of app.pages) load(path.join(root, page + ".js"));
+load(path.join(root, "custom-tab-bar/index.js"));
+assert.deepEqual(registrations, {
+  app: 1,
+  pages: app.pages.length,
+  components: 1,
+});
+console.log("Miniapp runtime entrypoints and CommonJS imports passed.");

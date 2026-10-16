@@ -36,6 +36,8 @@ npm run dev:showcase
 
 微信开发者工具导入`miniapp/`。AppID：`wx71016248d99d9bd4`。服务地址与身份模式在`miniapp/config.ts`；真机需配置自己的HTTPS合法域名，不能用手机的127.0.0.1访问电脑服务。
 
+`npm run setup`会用项目自带TypeScript编译器生成小程序运行JS。修改TS源码时另开终端运行`npm run dev:miniapp`自动同步，或执行`npm --prefix miniapp run build`后点击微信工具“编译”。生成JS/map不进入Git，TS是编辑源；不依赖IDE是否正确加载TypeScript编译插件。若提示找不到home.js，先运行上述build。
+
 SQL：设置`STORAGE_MODE=cloudbase-sql`和`CLOUDBASE_PG_API_KEY`，环境为`test1-d8gfuke7sfcd0a6d6`。建表迁移与种子见cloudbase/README.md。本地开发密钥不提交Git。
 
 ```powershell

@@ -17,11 +17,23 @@
     "postcss": true,
     "minified": false,
     "urlCheck": false,
-    "useCompilerPlugins": ["typescript"]
+    "useCompilerPlugins": [],
+    "minifyWXML": true,
+    "enhance": true,
+    "disableSWC": true,
+    "swc": false,
+    "ignoreDevUnusedFiles": false,
+    "ignoreUploadUnusedFiles": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
   },
   "compileType": "miniprogram",
   "libVersion": "3.8.6",
   "appid": "wx71016248d99d9bd4",
   "projectname": "campuspilot",
-  "miniprogramRoot": "./"
+  "miniprogramRoot": "./",
+  "srcMiniprogramRoot": "./"
 }
