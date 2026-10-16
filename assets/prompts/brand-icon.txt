@@ -1,0 +1,6 @@
+Use case: logo-brand
+Asset type: square app icon for CampusPilot, a campus affairs AI assistant.
+Primary request: A bold original minimal app emblem merging a university open gateway with an upward navigation arrow in negative space. One coherent symbol, readable at 48 pixels.
+Style: polished flat vector-like brand mark, symmetrical optical balance, subtly rounded corners.
+Composition: central ivory and luminous cyan geometric mark occupying 62 percent of a solid deep midnight blue square. The background fills all edges, do not draw a rounded square outer frame.
+Constraints: no text, no letters, no hospital cross, no graduation cap, no robot, no watermark, no shadow, no extra symbols.

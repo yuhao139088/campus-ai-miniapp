@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/assistant/assistant",
+    "pages/service/service",
+    "pages/ocr/ocr",
+    "pages/form/form",
+    "pages/tasks/tasks",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "navigationBarTitleText": "校园智办",
+    "navigationBarBackgroundColor": "#081021",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#081021",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#8193af",
+    "selectedColor": "#30e0c1",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "assets/tabbar/home.png",
+        "selectedIconPath": "assets/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/assistant/assistant",
+        "text": "助手",
+        "iconPath": "assets/tabbar/assistant.png",
+        "selectedIconPath": "assets/tabbar/assistant-active.png"
+      },
+      {
+        "pagePath": "pages/tasks/tasks",
+        "text": "任务",
+        "iconPath": "assets/tabbar/tasks.png",
+        "selectedIconPath": "assets/tabbar/tasks-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/tabbar/profile.png",
+        "selectedIconPath": "assets/tabbar/profile-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "permission": {},
+  "lazyCodeLoading": "requiredComponents"
+}

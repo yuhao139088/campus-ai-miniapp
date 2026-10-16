@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "skills": {
+    "@showapi/miniapp-single-canvas-ui-group-generator-showapi": {
+      "name": "小程序单设计UI组图生成-万维易源",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=miniapp-single-canvas-ui-group-generator-showapi&namespace=showapi",
+      "source": "enterprise",
+      "version": "1.0.1",
+      "namespace": {
+        "canonicalName": "@showapi/miniapp-single-canvas-ui-group-generator-showapi",
+        "displayName": "showapi",
+        "handle": "showapi",
+        "publicSlug": "miniapp-single-canvas-ui-group-generator-showapi"
+      },
+      "internalSlug": "miniapp-single-canvas-ui-group-generator-showapi",
+      "publicSlug": "miniapp-single-canvas-ui-group-generator-showapi",
+      "installDir": "E:\\cz-4\\.agents\\skills\\@showapi\\miniapp-single-canvas-ui-group-generator-showapi"
+    },
+    "@user_8c3c5215/miniapp-precision-control-evo": {
+      "name": "小程序精准控制·进化版",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=miniapp-precision-control-evo&namespace=user_8c3c5215",
+      "source": "community",
+      "version": "3.3.2",
+      "namespace": {
+        "canonicalName": "@user_8c3c5215/miniapp-precision-control-evo",
+        "displayName": "user_8c3c5215",
+        "handle": "user_8c3c5215",
+        "publicSlug": "miniapp-precision-control-evo"
+      },
+      "internalSlug": "miniapp-precision-control-evo",
+      "publicSlug": "miniapp-precision-control-evo",
+      "installDir": "E:\\cz-4\\.agents\\skills\\@user_8c3c5215\\miniapp-precision-control-evo"
+    },
+    "@tencent-adm/miniprogram-virtualpay-person": {
+      "name": "小程序虚拟支付：个人接入",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=miniprogram-virtualpay-person&namespace=tencent-adm",
+      "source": "enterprise",
+      "version": "1.0.2",
+      "namespace": {
+        "canonicalName": "@tencent-adm/miniprogram-virtualpay-person",
+        "displayName": "tencent-adm",
+        "handle": "tencent-adm",
+        "publicSlug": "miniprogram-virtualpay-person"
+      },
+      "internalSlug": "miniprogram-virtualpay-person",
+      "publicSlug": "miniprogram-virtualpay-person",
+      "installDir": "E:\\cz-4\\.agents\\skills\\@tencent-adm\\miniprogram-virtualpay-person"
+    },
+    "@user_7ffc2311/wechat-tabbar-icons": {
+      "name": "小程序图标生成",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=wechat-tabbar-icons&namespace=user_7ffc2311",
+      "source": "community",
+      "version": "1.0.0",
+      "namespace": {
+        "canonicalName": "@user_7ffc2311/wechat-tabbar-icons",
+        "displayName": "user_7ffc2311",
+        "handle": "user_7ffc2311",
+        "publicSlug": "wechat-tabbar-icons"
+      },
+      "internalSlug": "wechat-tabbar-icons",
+      "publicSlug": "wechat-tabbar-icons",
+      "installDir": "E:\\cz-4\\.agents\\skills\\@user_7ffc2311\\wechat-tabbar-icons"
+    },
+    "@tencent-adm/wxa-skills-generate": {
+      "name": "微信小程序AI开发模式生成Skills",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=wxa-skills-generate&namespace=tencent-adm",
+      "source": "enterprise",
+      "version": "0.2.3",
+      "namespace": {
+        "canonicalName": "@tencent-adm/wxa-skills-generate",
+        "displayName": "tencent-adm",
+        "handle": "tencent-adm",
+        "publicSlug": "wxa-skills-generate"
+      },
+      "internalSlug": "wxa-skills-generate",
+      "publicSlug": "wxa-skills-generate",
+      "installDir": "E:\\cz-4\\.agents\\skills\\@tencent-adm\\wxa-skills-generate"
+    },
+    "@tencent-adm/wxa-skills-validate": {
+      "name": "微信小程序AI开发模式校验Skills",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=wxa-skills-validate&namespace=tencent-adm",
+      "source": "enterprise",
+      "version": "0.2.3",
+      "namespace": {
+        "canonicalName": "@tencent-adm/wxa-skills-validate",
+        "displayName": "tencent-adm",
+        "handle": "tencent-adm",
+        "publicSlug": "wxa-skills-validate"
+      },
+      "internalSlug": "wxa-skills-validate",
+      "publicSlug": "wxa-skills-validate",
+      "installDir": "E:\\cz-4\\.agents\\skills\\@tencent-adm\\wxa-skills-validate"
+    }
+  }
+}

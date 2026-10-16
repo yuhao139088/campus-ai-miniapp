@@ -1,0 +1,25 @@
+name: Verify CampusPilot
+on: [push, pull_request]
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run setup
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run check:miniapp
+      - run: npm run build
+      - run: node tools/scan-secrets.mjs
+      - name: Docker smoke test
+        run: |
+          cp .env.example .env
+          docker compose config --quiet
+          docker compose up --build -d --wait
+          curl --fail http://127.0.0.1:8080/api/health
+          curl --fail http://127.0.0.1:8080/
+      - if: always()
+        run: docker compose down

@@ -1,0 +1,8 @@
+{
+  "service_items": [
+    { "id": "leave", "title": "请假与销假", "category": "校园办事", "description": "查询请假材料、流程和审批节点" },
+    { "id": "scholarship", "title": "奖助学金申请", "category": "资助服务", "description": "整理申请条件、证明材料和时间节点" },
+    { "id": "dorm-repair", "title": "宿舍报修", "category": "后勤服务", "description": "创建报修工单并追踪处理进度" },
+    { "id": "activity", "title": "校园活动报名", "category": "校园生活", "description": "查找活动、生成报名信息并设置提醒" }
+  ]
+}

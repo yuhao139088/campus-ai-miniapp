@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "Node16",
+    "strict": true,
+    "noImplicitThis": false,
+    "moduleResolution": "Node16",
+    "skipLibCheck": true,
+    "types": ["miniprogram-api-typings"],
+    "rootDir": ".",
+    "outDir": "../.build/miniapp",
+    "lib": ["ES2020"]
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}

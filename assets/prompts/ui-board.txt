@@ -1,0 +1,7 @@
+Use case: ui-mockup
+Asset type: single-canvas seven-screen native WeChat miniapp design board for CampusPilot.
+Canvas: 1760 by 1848 pixels; 4 columns by 2 rows, 390x844 each, 40px gutters, outer margins 40px.
+Coordinates: home (40,40), assistant (470,40), service (900,40), document scan (1330,40), editable form (40,924), tasks (470,924), profile (900,924). Keep the last cell blank for palette notes. No screen overlaps.
+Global style lock: midnight navy #081021, panel #101E33, mint #52E0BC, ivory #EEF5FF, secondary #9AACBF; 14px card radius, 16px body, 24px headings, consistent 24px line icons and four-tab navigation.
+Show the actual service flow: express a scholarship request, cited demo guide and checklist, scan fictional material with empty uncertain fields, user-editable form, explicit confirmation, task progress and in-app reminder. No real payment or school approval.
+Native WeChat status bar and safe area. Sophisticated future campus terminal aesthetic, clear touch targets, readable Chinese headings where possible. Do not invent scores, service availability or real school data.

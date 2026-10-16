@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "skills": {
+    "@showapi/miniapp-single-canvas-ui-group-generator-showapi": {
+      "version": "1.0.1",
+      "source": "enterprise",
+      "namespace": "showapi",
+      "slug": "miniapp-single-canvas-ui-group-generator-showapi"
+    },
+    "@user_8c3c5215/miniapp-precision-control-evo": {
+      "version": "3.3.2",
+      "source": "community",
+      "namespace": "user_8c3c5215",
+      "slug": "miniapp-precision-control-evo"
+    },
+    "@tencent-adm/miniprogram-virtualpay-person": {
+      "version": "1.0.2",
+      "source": "enterprise",
+      "namespace": "tencent-adm",
+      "slug": "miniprogram-virtualpay-person"
+    },
+    "@user_7ffc2311/wechat-tabbar-icons": {
+      "version": "1.0.0",
+      "source": "community",
+      "namespace": "user_7ffc2311",
+      "slug": "wechat-tabbar-icons"
+    },
+    "@tencent-adm/wxa-skills-generate": {
+      "version": "0.2.3",
+      "source": "enterprise",
+      "namespace": "tencent-adm",
+      "slug": "wxa-skills-generate"
+    },
+    "@tencent-adm/wxa-skills-validate": {
+      "version": "0.2.3",
+      "source": "enterprise",
+      "namespace": "tencent-adm",
+      "slug": "wxa-skills-validate"
+    }
+  }
+}

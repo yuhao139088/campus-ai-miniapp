@@ -1,0 +1,13 @@
+{
+  "envId": "test1-d8gfuke7sfcd0a6d6",
+  "region": "ap-shanghai",
+  "functionRoot": "cloudbase/functions",
+  "functions": [
+    {
+      "name": "campuspilot-session",
+      "timeout": 10,
+      "runtime": "Nodejs18.15",
+      "handler": "index.main"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "description": "CampusPilot 校园智办",
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "node_modules"
+      },
+      {
+        "type": "file",
+        "value": "package-lock.json"
+      }
+    ]
+  },
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": false,
+    "urlCheck": false,
+    "useCompilerPlugins": ["typescript"]
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.8.6",
+  "appid": "wx71016248d99d9bd4",
+  "projectname": "campuspilot",
+  "miniprogramRoot": "./"
+}

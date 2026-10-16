@@ -1,0 +1,7 @@
+Use case: stylized-concept
+Asset type: CampusPilot campus AI affairs assistant hero illustration.
+Primary request: A beautiful miniature futuristic university campus seen in isometric view, ivory academic buildings, a cyan glass intelligent service pavilion at its center, a small floating luminous navigation compass guiding a paper document into an orderly path. No people closeups.
+Style: sophisticated editorial 3D illustration, clean geometric architecture, matte ceramic with restrained glass details, soft studio light.
+Composition: centered campus island, strong readable silhouette, wide breathing room on solid very dark navy #081021 background; no UI screenshots, no collage.
+Palette: ivory, deep navy, electric cyan, subtle periwinkle.
+Constraints: no text, no letters, no logos, no watermark. Original assets only.

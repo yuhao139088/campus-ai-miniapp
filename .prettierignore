@@ -1,0 +1,8 @@
+node_modules
+dist
+.agents
+.cache
+.build
+AI交接
+tools/watermarks-remover-main
+*-lock.json

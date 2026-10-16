@@ -1,0 +1,12 @@
+{
+  "project":"CampusPilot",
+  "recordedAt":"2026-10-16",
+  "assets":[
+    {"path":"campus-interim.jpg","method":"original Pillow geometry","purpose":"Interim campus hero while Image-2.5 gateway returns 502","aiGenerated":false},
+    {"path":"../miniapp/assets/campuspilot-icon.png","method":"original Pillow drawing","purpose":"Registration icon draft","aiGenerated":false},
+    {"path":"sample-material.png","method":"original Pillow text layout","purpose":"Fictional OCR test fixture","aiGenerated":false},
+    {"path":"icon-sources/*.png","method":"original deterministic line drawing + wechat-tabbar-icons tint script","purpose":"Native tabBar dual states","aiGenerated":false}
+  ],
+  "imageProviderAttempt":{"model":"gpt-image-2.5","endpoint":"https://openai945.cn/v1","status":"blocked_upstream_502","prompts":["prompts/brand-icon.txt","prompts/campus-hero.txt","prompts/ui-board.txt"]},
+  "metadataProcessing":{"tool":"guillaumemeyer/watermarks-remover","scope":"Original project assets only; container metadata","sourceAndPromptAuditPreserved":true}
+}
