@@ -13,7 +13,8 @@
     "check:miniapp": "node tools/check-miniapp.mjs",
     "test": "npm --prefix server test",
     "build": "npm --prefix miniapp run build && npm --prefix showcase run build",
-    "dev:miniapp": "npm --prefix miniapp run dev"
+    "dev:miniapp": "npm --prefix miniapp run dev",
+    "prepare:lan": "npm --prefix miniapp run build && node tools/prepare-lan-preview.mjs"
   },
   "keywords": [],
   "author": "",

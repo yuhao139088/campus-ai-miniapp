@@ -22,6 +22,29 @@ TypeScript由项目脚本显式编译：setup自动生成11个运行JS及sourceM
 
 当前自动化在独立最小原生页面也复现超时，覆盖基础库3.8.6和3.17.4；内置MPPage.getCurrent报告页面元数据为空。停止反复修改业务代码，采用人工验证并保留工具异常证据。授权、登录和项目实际运行成功，与自动化全流程通过是不同状态。
 
+## 同一Wi-Fi手机预览
+
+先启动本地后端，再执行：
+
+```powershell
+npm run prepare:lan
+# 多张无线网卡时，显式指定电脑当前Wi-Fi IPv4：
+# npm run prepare:lan -- --host 192.168.1.20
+```
+
+脚本校验地址属于本机私网网卡、检查后端health，再生成独立的`.build/lan-miniapp-*`运行包。最新目录和API地址记录在`.build/lan-preview.json`。不读取服务端密钥，不改`miniapp/config.ts`的默认地址；预览目录不进入Git。每次修改源码后重新生成预览包和二维码。
+
+手机和电脑连接同一Wi-Fi，先在手机浏览器打开`http://电脑Wi-Fi地址:8787/api/health`。能看到status为ok后，用微信扫描该预览包的二维码。开发阶段若出现合法域名或HTTP限制，在手机小程序菜单开启调试模式再进入；正式版本仍须使用HTTPS合法域名。
+
+使用已授权的Nightly生成二维码：
+
+```powershell
+$lanPreview = Get-Content .build/lan-preview.json -Raw | ConvertFrom-Json
+wechatide -c Codex create_preview_qrcode --project $lanPreview.project --qr-format window
+```
+
+后端监听`0.0.0.0:8787`。若手机浏览器无法访问health，检查网络是否隔离客户端以及本机入站设置；不需要关闭整个防火墙。此方式只供同一局域网开发验证，电脑切换网络或IP后需重新生成。
+
 ## SQL与文件存储
 
 目标环境`test1-d8gfuke7sfcd0a6d6`、地域ap-shanghai、PostgreSQL。迁移与操作步骤见`cloudbase/README.md`。私钥仅注入后端`CLOUDBASE_PG_API_KEY`，设置`STORAGE_MODE=cloudbase-sql`。
