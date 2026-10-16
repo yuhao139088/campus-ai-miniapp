@@ -1,0 +1,28 @@
+<view class="page library-page">
+  <text class="eyebrow">YOUR CAMPUS / YOUR SOURCES</text>
+  <view class="heading">把学校通知，<view>变成可执行的下一步。</view></view>
+  <view class="muted">资料仅自己可见。按学校和校区管理，AI 每条判断都回到原文。</view>
+  <view class="card">
+    <view class="row"><text class="section-title">当前学校</text><text class="inline-link" bindtap="toggleCreate">{{creating?'收起':'＋ 建立资料库'}}</text></view>
+    <picker wx:if="{{schools.length}}" range="{{schoolNames}}" bindchange="select"><view class="school-select">{{selected.name}} {{selected.campus}} <text>⌄</text></view></picker>
+    <view wx:if="{{creating || !schools.length}}" class="stack"><input value="{{name}}" data-field="name" bindinput="input" placeholder="学校名称"/><input class="gap" value="{{campus}}" data-field="campus" bindinput="input" placeholder="校区（选填）"/><button bindtap="create" loading="{{loading}}" disabled="{{loading}}">建立个人资料库</button></view>
+  </view>
+  <view wx:if="{{selected}}" class="card">
+    <view class="section-title">导入适用通知或校规</view>
+    <view class="import-modes"><text class="pill {{mode==='text'?'selected':''}}" data-mode="text" bindtap="mode">粘贴正文</text><text class="pill {{mode==='file'?'selected':''}}" data-mode="file" bindtap="mode">PDF / Word / TXT</text><text class="pill {{mode==='url'?'selected':''}}" data-mode="url" bindtap="mode">通知链接</text></view>
+    <input class="gap" value="{{title}}" data-field="title" bindinput="input" placeholder="资料标题（选填）" maxlength="120"/>
+    <textarea wx:if="{{mode==='text'}}" class="gap" value="{{text}}" data-field="text" bindinput="input" maxlength="120000" placeholder="粘贴完整通知，保留年份、条件、材料要求和截止日期"/>
+    <input wx:if="{{mode==='url'}}" class="gap" value="{{url}}" data-field="url" bindinput="input" placeholder="公开通知网页完整链接" maxlength="2048"/>
+    <view wx:if="{{mode==='file'}}" class="notice">从微信聊天文件选择 · 单份最大8MB · PDF最多60页。扫描PDF请先转可检索文字。</view>
+    <view wx:if="{{mode==='url'}}" class="notice">自动读取公开正文；登录、验证码和动态页面可改用粘贴正文。</view>
+    <button class="gap" loading="{{loading}}" disabled="{{loading}}" bindtap="importDocument">{{loading?'正在解析并保存…':mode==='file'?'选择文件并导入':'导入个人资料库'}}</button>
+    <view class="notice">导入内容可能发送至配置的AI服务用于核验。请只导入有权使用的资料，并核对来源和适用范围。</view>
+  </view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <view class="row gap"><text class="section-title">已生效资料 · {{documents.length}}</text><text class="badge">仅自己可见</text></view>
+  <view wx:if="{{!documents.length}}" class="card empty"><text class="muted">先导入一份真实通知，再让助手核验条件。</text></view>
+  <view wx:for="{{documents}}" wx:key="id" class="card"><view data-id="{{item.id}}" bindtap="source"><text class="section-title">{{item.title}} ↗</text><view class="muted small">{{item.sourceType==='url'?'通知网页':item.sourceType==='file'?'文件导入':'粘贴正文'}} · {{item.characters}}字 · {{item.sections}}节</view><view class="doc-preview">{{item.preview}}</view><text class="badge small">版本 {{item.version}}</text></view><text class="inline-link" data-id="{{item.id}}" bindtap="archive">归档旧版</text></view>
+  <button wx:if="{{documents.length}}" bindtap="ask">基于这些资料开始核验 ↗</button>
+  <view wx:if="{{histories.length}}" class="section-title gap">最近核验 · 可恢复</view>
+  <view wx:for="{{histories}}" wx:key="id" class="card row" data-id="{{item.id}}" bindtap="history"><view><text>{{item.title || '办理核验'}}</text><view class="muted small">{{item.schoolName}}</view></view><text>↗</text></view>
+</view>

@@ -3,7 +3,7 @@ Page({
   data: {
     loading: false,
     form: null as Form | null,
-    fields: [] as { key: string; value: string; error: string }[],
+    fields: [] as { key: string; value: string; error: string; required: boolean; type: string }[],
     error: "",
   },
   async onLoad() {
@@ -37,6 +37,8 @@ Page({
         key,
         value,
         error: form.validation.errors[key] || "",
+        required: form.fieldSchema?.find((field) => field.key === key)?.required ?? true,
+        type: form.fieldSchema?.find((field) => field.key === key)?.type || "text",
       })),
     });
   },

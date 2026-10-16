@@ -7,10 +7,10 @@ Node.js22+。在仓库根目录执行`npm run setup`，复制`.env.example`为`.
 ```powershell
 npm run dev:server
 # 另一个终端
-npm run dev:showcase
+npm run dev:miniapp
 ```
 
-打开本机5173端口。默认离线+本地持久化可演示全流程，但图像OCR需配置实际视觉模型。设置`AI_MODE=live`、AI_BASE_URL、AI_API_KEY、AI_MODEL_MAX和AI_VISION_MODEL后启用实时模型。DEMO_MODE只控制演示身份，不会强制关闭AI。
+后端监听8787。默认离线+本地持久化可演示全流程，但图像OCR需配置实际视觉模型。设置`AI_MODE=live`、AI_BASE_URL、AI_API_KEY、AI_MODEL_MAX和AI_VISION_MODEL后启用实时模型。DEMO_MODE只控制演示身份，不会强制关闭AI。
 
 微信开发者工具导入`miniapp/`，AppID已配置`wx71016248d99d9bd4`。`miniapp/config.ts`默认本机127.0.0.1地址、演示身份；真机无法访问电脑的127.0.0.1，部署后替换为自己的HTTPS服务域名，在小程序后台配置request/uploadFile合法域名。普通小程序不需要平台AI开发模式扩展。
 
@@ -56,9 +56,9 @@ docker compose config --quiet
 docker compose up --build -d --wait
 ```
 
-8080提供演示台及同源API代理，8787为后端，仅绑定本机。命名卷campus-data保留本地模式的数据；SQL模式使用CloudBase。关闭：`docker compose down`，保留卷；不要使用-v删除数据。
+8787提供后端，仅绑定本机。命名卷campus-data保留本地模式的数据；SQL模式使用CloudBase。关闭：`docker compose down`，保留卷；不要使用-v删除数据。
 
-GitHub Actions全新Linux环境已通过双服务Docker构建、启动与代理health/网页访问。当前Windows主机Docker Desktop另有sailor-ingest.sock系统访问错误；这不影响CI中已验证的容器结果。
+GitHub Actions全新Linux环境已通过Node服务Docker构建、启动与health。当前Windows主机Docker Desktop另有sailor-ingest.sock系统访问错误；这不影响CI中已验证的容器结果。
 
 ## 服务器阶段
 

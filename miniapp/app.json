@@ -6,7 +6,9 @@
     "pages/ocr/ocr",
     "pages/form/form",
     "pages/tasks/tasks",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/library/library",
+    "pages/source/source"
   ],
   "window": {
     "navigationBarTitleText": "校园智办",

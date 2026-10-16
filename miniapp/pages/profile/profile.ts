@@ -25,7 +25,7 @@ Page({
     wx.showModal({
       title: "数据与隐私",
       content:
-        "演示资料均为虚构。上传的材料会发送至配置的模型服务用于识别，表单仅由你确认后保存。任务按用户隔离，不对接学校审批。请勿上传无关敏感信息。正式运营前需补充运营主体、隐私政策与联系信息。",
+        "默认演示资料为虚构，个人导入资料与学校库按用户隔离。核验和图片识别会把相关资料发送给配置的模型服务；表单由你核对保存，不对接学校审批。本机保存演示身份恢复凭据，使重新进入后保留资料库，请勿在公用设备使用。正式运营需完成真实身份与隐私政策接入。",
       showCancel: false,
     });
   },
@@ -34,6 +34,7 @@ Page({
     wx.removeStorageSync("currentRun");
     wx.removeStorageSync("currentOcr");
     wx.removeStorageSync("currentForm");
+    wx.removeStorageSync("currentSchool");
     wx.showToast({ title: "本机会话已清除" });
   },
 });

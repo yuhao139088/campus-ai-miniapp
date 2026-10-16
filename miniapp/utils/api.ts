@@ -13,9 +13,26 @@ export type Run = {
   steps: Step[];
   mode: string;
   warning?: string;
-  citations: { title: string; sourceId: string }[];
+  citations: { title: string; sourceId: string; documentId?: string; label?: string; quote?: string }[];
   trace: { tool: string; status: string }[];
+  title?: string;
+  question?: string;
+  schoolId?: string;
+  schoolName?: string;
+  knowledgeMode?: string;
+  eligibility?: string;
+  questions?: { key: string; question: string }[];
+  criteria?: { rule: string; status: string; explanation: string }[];
+  materials?: { name: string; required: boolean; guidance: string; status: string; statusText: string }[];
+  profile?: Fields;
+  providedMaterials?: string[];
+  formFields?: FieldSchema[];
+  deadline?: { date: string; explanation: string; expired?: boolean } | null;
 };
+export type School = { id: string; name: string; campus: string; documentCount?: number };
+export type FieldSchema = { key: string; required: boolean; type: string };
+export type LibraryDocument = { id: string; title: string; sourceType: string; sourceUrl?: string; importedAt: string;
+  version: string; characters: number; sections: number; preview: string };
 export type Task = {
   id: string;
   title: string;
@@ -30,6 +47,7 @@ export type Form = {
   validation: { valid: boolean; errors: Fields };
   confirmed: boolean;
   serviceId: string;
+  fieldSchema?: FieldSchema[];
 };
 export type Service = {
   id: string;
@@ -81,7 +99,7 @@ export async function session(): Promise<string> {
   if (saved && saved.expiresAt > Date.now()) return saved.token;
   if (!loginPromise)
     loginPromise = (async () => {
-      let data: { token: string; expiresIn: number };
+      let data: { token: string; expiresIn: number; resumeKey?: string };
       if (config.authMode === "cloudbase") {
         const r = await wx.cloud.callFunction({ name: "campuspilot-session" });
         const ticket = (r.result as { ticket: unknown }).ticket;
@@ -89,7 +107,10 @@ export async function session(): Promise<string> {
       } else if (config.authMode === "wechat") {
         const r = await wx.login();
         data = await raw("/api/auth/wechat", "POST", { code: r.code });
-      } else data = await raw("/api/auth/demo", "POST", {});
+      } else {
+        data = await raw("/api/auth/demo", "POST", { resumeKey: wx.getStorageSync("demoResumeKey") || undefined });
+        if (data.resumeKey) wx.setStorageSync("demoResumeKey", data.resumeKey);
+      }
       wx.setStorageSync("session", {
         token: data.token,
         expiresAt: Date.now() + data.expiresIn * 1000,
@@ -143,3 +164,12 @@ export function tab(page: any, index: number) {
 }
 export const getRun = () => wx.getStorageSync("currentRun") as Run | undefined;
 export const getOcr = () => wx.getStorageSync("currentOcr") as OCR | undefined;
+export const getSchool = () => wx.getStorageSync("currentSchool") as School | undefined;
+export async function uploadDocument(filePath: string, schoolId: string, title: string): Promise<LibraryDocument> {
+  const token = await session();
+  return new Promise((resolve, reject) => wx.uploadFile({ url: config.apiBase + "/api/library/import", filePath, name: "file",
+    formData: { schoolId, title }, timeout: 120000, header: { Authorization: "Bearer " + token },
+    success(response) { try { const result = JSON.parse(response.data); if (response.statusCode < 300) resolve(result); else reject(new Error(result.error?.message || "资料导入失败")); } catch { reject(new Error("导入结果格式异常")); } },
+    fail: () => reject(new Error("上传失败，请检查网络并重试")),
+  }));
+}

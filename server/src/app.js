@@ -4,7 +4,7 @@ import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import multer from "multer";
 import { SignJWT, jwtVerify } from "jose";
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual, randomBytes, createHash } from "node:crypto";
 import { z } from "zod";
 import {
   makeId,
@@ -16,8 +16,22 @@ import {
 } from "./domain.js";
 import { ModelAdapter } from "./model.js";
 import { CampusAgent, agentTools, redact } from "./agent.js";
+import { GroundedAgent } from "./grounded-agent.js";
+import { registerLibrary } from "./library-routes.js";
+import { retrieveKnowledge } from "./knowledge.js";
 const fieldsSchema = z.record(z.string().max(40), z.string().max(1000));
-const serviceId = z.enum(serviceCatalog.map((s) => s.id));
+const serviceId = z.enum([...serviceCatalog.map((s) => s.id), "general-campus-service"]);
+function checkDraft(row, fields) {
+  if (!row.fieldSchema) return validateForm(row.serviceId, fields);
+  const errors = {};
+  for (const field of row.fieldSchema) {
+    const value = String(fields[field.key] || "").trim();
+    if (field.required && !value) errors[field.key] = "请补充此项";
+    else if (value && field.type === "number" && !Number.isFinite(Number(value))) errors[field.key] = "请填写数字";
+    else if (value && field.type === "date" && (!/^\d{4}-\d{2}-\d{2}$/.test(value) || Number.isNaN(Date.parse(value)))) errors[field.key] = "请填写YYYY-MM-DD日期";
+  }
+  return { valid: !Object.keys(errors).length, errors };
+}
 export async function createApp(config, store, providedModel) {
   const app = express();
   const model = providedModel || new ModelAdapter(config.ai);
@@ -28,7 +42,8 @@ export async function createApp(config, store, providedModel) {
   for (const doc of documents)
     if (!(await store.get("campus_documents", doc.id)))
       await store.save("campus_documents", doc);
-  const agent = new CampusAgent(model, () => store.list("campus_documents"));
+  const agent = new CampusAgent(model, async () => documents);
+  const grounded = new GroundedAgent(model);
   const key = new TextEncoder().encode(config.secret);
   app.disable("x-powered-by");
   app.use(helmet());
@@ -84,14 +99,14 @@ export async function createApp(config, store, providedModel) {
   );
   app.post("/api/auth/demo", async (req, res) => {
     if (!config.demo) throw fail(403, "DEMO_DISABLED", "演示登录已关闭");
-    const id = makeId("demo");
-    await store.save("users", {
-      id,
-      userId: id,
-      displayName: "演示同学",
-      createdAt: new Date().toISOString(),
-    });
-    res.json(await issue(id, "demo"));
+    const body = z.object({ resumeKey: z.string().regex(/^[a-f0-9]{64}$/).optional() }).parse(req.body || {});
+    const resumeKey = body.resumeKey || randomBytes(32).toString("hex");
+    const id = "demo_" + createHash("sha256").update(resumeKey).digest("hex");
+    const existing = await store.get("users", id);
+    if (body.resumeKey && !existing) throw fail(401, "DEMO_IDENTITY_NOT_FOUND", "本机演示身份不存在，请重新创建资料库身份");
+    if (!existing) await store.save("users", { id, userId: id, displayName: "演示同学", createdAt: new Date().toISOString() });
+    // Keep only the one-way identifier on the server. The resume key stays on this device.
+    res.json({ ...(await issue(id, "demo")), resumeKey });
   });
   app.post("/api/auth/wechat", async (req, res) => {
     const body = z.object({ code: z.string().min(5).max(256) }).parse(req.body);
@@ -166,30 +181,28 @@ export async function createApp(config, store, providedModel) {
       tools: agentTools,
     }),
   );
+  const library = registerLibrary(app, store, owned);
   app.post("/api/knowledge/search", async (req, res) => {
-    const b = z.object({ query: z.string().min(1).max(2000) }).parse(req.body);
-    res.json({
-      items: searchCampusKnowledge(
-        b.query,
-        await store.list("campus_documents"),
-      ),
-      mode: "lexical",
-      notice: "知识均为演示资料",
-    });
+    const b = z.object({ query: z.string().min(1).max(2000), schoolId: z.string().optional() }).parse(req.body);
+    const items = b.schoolId ? retrieveKnowledge(b.query, await library.privateDocs(req.userId, b.schoolId)) : searchCampusKnowledge(b.query, documents);
+    res.json({ items, mode: "lexical", notice: b.schoolId ? "仅检索本人此学校资料" : "演示指南" });
   });
+  app.get("/api/agent/runs", async (req, res) => {
+    const runs = await store.list("agent_runs", { userId: req.userId });
+    res.json({ items: runs.sort((a,b) => b.createdAt.localeCompare(a.createdAt)).slice(0,30).map(({id,title,intent,schoolName,createdAt,mode,eligibility}) => ({id,title,intent,schoolName,createdAt,mode,eligibility})) });
+  });
+  app.get("/api/agent/runs/:id", async (req, res) => res.json(await owned("agent_runs", req.params.id, req.userId)));
   const plan = async (req, res) => {
-    const b = z
-      .object({ message: z.string().trim().min(1).max(2000) })
-      .parse(req.body);
-    const result = await agent.plan(b.message);
+    const b = z.object({ message: z.string().trim().min(1).max(2000), schoolId: z.string().max(100).optional(),
+      previousRunId: z.string().optional(), profile: fieldsSchema.optional(), providedMaterials: z.array(z.string().max(120)).max(30).optional(), ocrId: z.string().optional() }).parse(req.body);
+    const previous = b.previousRunId ? await owned("agent_runs", b.previousRunId, req.userId) : null;
+    if (previous && previous.schoolId !== b.schoolId) throw fail(400, "SCHOOL_MISMATCH", "重新核验须选择原学校资料库");
+    const ocr = b.ocrId ? await owned("ocr_records", b.ocrId, req.userId) : null;
+    const result = b.schoolId ? await grounded.plan({ message: b.message, school: await library.ensureSchool(req.userId, b.schoolId),
+      docs: await library.privateDocs(req.userId, b.schoolId), profile: { ...(previous?.profile || {}), ...(b.profile || {}) },
+      providedMaterials: b.providedMaterials || previous?.providedMaterials || [], ocrFields: ocr?.fields || {}, previousRunId: previous?.id }) : await agent.plan(b.message);
     await store.save("agent_runs", { ...result, userId: req.userId });
-    await store.save("conversations", {
-      id: makeId("conversation"),
-      userId: req.userId,
-      message: redact(b.message),
-      runId: result.id,
-      createdAt: result.createdAt,
-    });
+    await store.save("conversations", { id: makeId("conversation"), userId: req.userId, message: redact(b.message), runId: result.id, createdAt: result.createdAt });
     res.json(result);
   };
   app.post("/api/assistant/chat", plan);
@@ -317,13 +330,17 @@ export async function createApp(config, store, providedModel) {
       ? await owned("ocr_records", b.ocrId, req.userId)
       : null;
     const s = serviceCatalog.find((s) => s.id === b.serviceId);
+    const fieldSchema = run?.knowledgeMode === "imported" ? run.formFields : null;
+    if (!s && !fieldSchema) throw fail(400, "UNKNOWN_SERVICE", "请先生成有效办理计划");
+    if (fieldSchema && !fieldSchema.length) throw fail(400, "NO_FORM_SCHEMA", "资料未明确申请表字段，请查看原文或仅保存办理任务");
     const input = {
+      ...(run?.profile || {}),
       ...(run?.extractedFields || {}),
       ...(ocr?.fields || {}),
       ...(b.fields || {}),
     };
     const fields = Object.fromEntries(
-      s.fields.map((k) => [k, String(input[k] || "")]),
+      (fieldSchema ? fieldSchema.map((field) => field.key) : s?.fields || []).map((k) => [k, String(input[k] || "")]),
     );
     const row = {
       id: makeId("form"),
@@ -331,12 +348,21 @@ export async function createApp(config, store, providedModel) {
       serviceId: b.serviceId,
       ...(b.runId ? { runId: b.runId } : {}),
       fields,
-      validation: validateForm(b.serviceId, fields),
+      ...(fieldSchema ? { fieldSchema } : {}),
+      validation: checkDraft({ serviceId: b.serviceId, fieldSchema }, fields),
       confirmed: false,
       createdAt: new Date().toISOString(),
     };
     await store.save("form_drafts", row);
     res.json(row);
+  });
+  app.get("/api/forms/:id/export", async (req, res) => {
+    const form = await owned("form_drafts", req.params.id, req.userId);
+    const run = form.runId ? await owned("agent_runs", form.runId, req.userId) : null;
+    const text = ["CampusPilot 办理草稿（本人核对后向正式渠道提交）", run?.title || "申请草稿", "",
+      ...Object.entries(form.fields).map(([key,value]) => key + "：" + value), "", "材料清单", ...(run?.materials || []).map((item) => item.name),
+      "", "引用来源", ...(run?.citations || []).map((item) => item.title + (item.label ? " / " + item.label : "") + (item.quote ? "：" + item.quote : ""))].join("\n");
+    res.setHeader("Content-Type", "text/plain; charset=utf-8"); res.setHeader("Content-Disposition", 'attachment; filename="campuspilot-form.txt"'); res.send(text);
   });
   app.put("/api/forms/:id", async (req, res) => {
     const b = z
@@ -345,9 +371,9 @@ export async function createApp(config, store, providedModel) {
     const row = await owned("form_drafts", req.params.id, req.userId);
     const s = serviceCatalog.find((s) => s.id === row.serviceId);
     row.fields = Object.fromEntries(
-      s.fields.map((k) => [k, b.fields[k] || ""]),
+      (row.fieldSchema ? row.fieldSchema.map((field) => field.key) : s.fields).map((k) => [k, b.fields[k] || ""]),
     );
-    row.validation = validateForm(row.serviceId, row.fields);
+    row.validation = checkDraft(row, row.fields);
     row.confirmed = Boolean(b.confirm && row.validation.valid);
     row.updatedAt = new Date().toISOString();
     await store.save("form_drafts", row);
@@ -362,7 +388,7 @@ export async function createApp(config, store, providedModel) {
       })
       .parse(req.body);
     const run = await owned("agent_runs", b.runId, req.userId);
-    if (!serviceCatalog.some((s) => s.id === run.intent))
+    if (!run.steps?.length || (!run.knowledgeMode && !serviceCatalog.some((s) => s.id === run.intent)))
       throw fail(400, "UNKNOWN_SERVICE", "请补充具体事项");
     if (b.formId) {
       const form = await owned("form_drafts", b.formId, req.userId);
@@ -374,7 +400,9 @@ export async function createApp(config, store, providedModel) {
       userId: req.userId,
       runId: run.id,
       serviceId: run.intent,
-      title: serviceCatalog.find((s) => s.id === run.intent).title,
+      title: run.title || serviceCatalog.find((s) => s.id === run.intent)?.title || "校园办理",
+      ...(run.schoolId ? { schoolId: run.schoolId, schoolName: run.schoolName } : {}),
+      ...(run.deadline ? { sourceDeadline: run.deadline } : {}),
       steps: run.steps.map((s) => ({ ...s })),
       status: "办理中",
       createdAt: new Date().toISOString(),

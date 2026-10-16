@@ -12,13 +12,5 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-  showcase:
-    build: ./showcase
-    ports:
-      - "127.0.0.1:8080:80"
-    depends_on:
-      server:
-        condition: service_healthy
-    restart: unless-stopped
 volumes:
   campus-data:

@@ -2,9 +2,8 @@
 
 面向传智杯「AI微信小程序开发挑战赛」的校园事务Agent项目。将问答、事项识别、知识检索、材料OCR、可编辑表单、任务与站内提醒串成一条办理流程。
 
-原生微信小程序 + TypeScript · 独立Node.js后端 · CloudBase PostgreSQL + 私有pgstore · React评审控制台 · Docker。
+原生微信小程序 + TypeScript · 独立Node.js后端 · CloudBase PostgreSQL + 私有pgstore · Docker。
 
-![评审工作台](docs/images/showcase-desktop.png)
 
 ## 当前可运行能力
 
@@ -27,10 +26,10 @@ npm run setup
 Copy-Item .env.example .env
 npm run dev:server
 # 另一个终端
-npm run dev:showcase
+npm run dev:miniapp
 ```
 
-演示台：http://127.0.0.1:5173 。默认`.env.example`采用离线AI与本地JSON持久化，首次访问自动创建隔离的演示会话，没有共享用户名密码。
+后端监听8787。默认`.env.example`采用离线AI与本地JSON持久化，首次访问自动创建隔离的演示会话，没有共享用户名密码。
 
 启用模型：在本地`.env`设置`AI_MODE=live`、AI_BASE_URL、AI_API_KEY、AI_MODEL_MAX、AI_VISION_MODEL。所有模型ID可替换；只有配置且实际调用成功才显示实时AI。模型与图片生成密钥分离。
 
@@ -44,7 +43,7 @@ SQL：设置`STORAGE_MODE=cloudbase-sql`和`CLOUDBASE_PG_API_KEY`，环境为`te
 
 ```powershell
 docker compose up --build -d --wait
-# 演示台和API代理位于 http://127.0.0.1:8080
+# 后端位于 http://127.0.0.1:8787
 ```
 
 ## 检查
@@ -66,7 +65,6 @@ node tools/verify-live.mjs
 | miniapp/ | 原生TS小程序、七页与自定义tabBar |
 | server/ | 身份、Agent、视觉识别、表单、任务、提醒 |
 | cloudbase/ | PostgreSQL迁移、初始化、验证、身份云函数源码 |
-| showcase/ | React Bits评审演示控制台 |
 | packages/shared/ | 共享接口类型 |
 | assets/ | 原创资源、提示词与生成来源清单 |
 | tools/ | 校验、素材处理、可选AI模式构建与技能恢复 |
@@ -85,4 +83,4 @@ node tools/verify-live.mjs
 
 学校知识与材料为自制演示内容，不包含真实学校审批接入或真实收费。正式运营须完成运营主体、隐私政策、内容安全和学校授权等实际接入事项。
 
-根许可证Apache-2.0。React Bits组件保留自己的MIT + Commons Clause条件，见THIRD_PARTY_NOTICES.md；不对第三方技能重新授权。
+根许可证Apache-2.0。不对第三方技能重新授权。

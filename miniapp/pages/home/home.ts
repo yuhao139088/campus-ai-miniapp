@@ -1,10 +1,12 @@
-import { api, Service, Task, tab, showError } from "../../utils/api";
+import { api, Service, Task, School, getSchool, tab } from "../../utils/api";
 Page({
-  data: { services: [] as Service[], tasks: [] as Task[], error: "" },
+  data: { services: [] as Service[], tasks: [] as Task[], error: "", school: null as School | null },
   onShow() {
     tab(this, 0);
+    this.setData({ school: getSchool() || null });
     this.load();
   },
+  library() { wx.navigateTo({ url: "/pages/library/library" }); },
   async load() {
     try {
       const [s, t] = await Promise.all([

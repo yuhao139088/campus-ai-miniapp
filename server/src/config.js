@@ -29,9 +29,7 @@ export function loadConfig(env = process.env) {
     pgKey,
     dataDir:
       env.DATA_DIR || fileURLToPath(new URL("../../data/", import.meta.url)),
-    origins: (
-      env.CORS_ORIGINS || "http://localhost:5173,http://127.0.0.1:5173"
-    ).split(","),
+    origins: (env.CORS_ORIGINS || "").split(",").filter(Boolean),
     envId: env.CLOUDBASE_ENV_ID || "test1-d8gfuke7sfcd0a6d6",
     appId: env.WX_APPID || "wx71016248d99d9bd4",
     appSecret: env.WX_APP_SECRET,

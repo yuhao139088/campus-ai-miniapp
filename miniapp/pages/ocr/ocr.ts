@@ -7,6 +7,15 @@ Page({
     fields: [] as { key: string; value: string }[],
     error: "",
   },
+  async recheck() {
+    const run = getRun(); if (!run?.schoolId || !this.data.ocr) return;
+    this.setData({ loading: true, error: "" });
+    try {
+      const updated = await api("/api/agent/plan", "POST", { message: run.question || "核验办理事项", schoolId: run.schoolId,
+        previousRunId: run.id, profile: run.profile || {}, providedMaterials: run.providedMaterials || [], ocrId: this.data.ocr.id });
+      wx.setStorageSync("currentRun", updated); wx.removeStorageSync("currentForm"); wx.switchTab({ url: "/pages/assistant/assistant" });
+    } catch (error) { this.setData({ error: (error as Error).message }); } finally { this.setData({ loading: false }); }
+  },
   input(e: WechatMiniprogram.Input) {
     this.setData({ text: e.detail.value });
   },

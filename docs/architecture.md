@@ -3,7 +3,6 @@
 ```mermaid
 flowchart LR
   WX[原生微信小程序 TS] --> API[Node.js REST API]
-  WEB[React评审控制台] --> API
   API --> AUTH[JWT与用户归属校验]
   AUTH --> AGENT[Campus Agent]
   AGENT --> KNOW[演示知识库检索]
@@ -26,6 +25,6 @@ Agent模型返回严格校验的JSON；实际步骤按受支持事项的业务�
 
 PostgreSQL十表采用固定主键、用户归属列、JSONB业务载荷、时间戳与索引。JSONB允许结构化Agent输出演进，user_id用于归属过滤。服务端仅允许表名白名单；不拼接用户SQL。十表RLS开启，对anon/authenticated关闭直接读写。Node后端API Key属于service_role，因此应用层每次读取、修改关联对象时都校验归属，不能把数据库RLS误称为独立JWT的用户隔离。
 
-小程序可选演示登录、`wx.login`服务端交换、CloudBase原生身份票据三种适配。真实模式须配AppSecret或部署签名身份桥接云函数。网页控制台目前用于本地评审演示，通过独立演示会话使用同一API。
+小程序可选演示登录、`wx.login`服务端交换、CloudBase原生身份票据三种适配。真实模式须配AppSecret或部署签名身份桥接云函数。
 
 当前提醒为应用内持久化日程。微信订阅通知需要模板、授权和定时触发器，尚未启用。任务完成百分比来自用户勾选的节点，不代表校方处理状态。

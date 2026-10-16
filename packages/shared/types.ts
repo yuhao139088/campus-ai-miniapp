@@ -10,6 +10,27 @@ export interface AgentStep {
 export interface AgentCitation {
   title: string;
   sourceId: string;
+  documentId?: string;
+  label?: string;
+  page?: number;
+  quote?: string;
+}
+
+export interface SchoolProfile { id: string; name: string; campus: string; createdAt: string; }
+export interface SourceEvidence { sourceId: string; quote: string; }
+export interface FormFieldSchema { key: string; required: boolean; type: "text" | "number" | "date" | "multiline"; evidence: SourceEvidence[]; }
+export interface EligibilityCriterion { rule: string; status: "met" | "unmet" | "need_info"; explanation: string; profileKeys: string[]; evidence: SourceEvidence[]; }
+export interface GroundedAnalysis {
+  schoolId: string; schoolName: string; question: string; title: string;
+  knowledgeMode: "imported"; profile: Record<string, string>; providedMaterials: string[];
+  eligibility: "preliminary_met" | "unmet" | "need_info";
+  criteria: EligibilityCriterion[];
+  questions: Array<{ key: string; question: string }>;
+  materials: Array<{ name: string; required: boolean; guidance: string; status: "provided" | "missing" | "optional"; evidence: SourceEvidence[] }>;
+  formFields: FormFieldSchema[];
+  deadline: null | { date: string; explanation: string; expired: boolean; evidence: SourceEvidence[] };
+  previousRunId?: string;
+  sourceVersions: Array<{ id: string; version: string }>;
 }
 
 export interface AgentResult {

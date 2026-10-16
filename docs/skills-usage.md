@@ -3,7 +3,7 @@
 | 技能 | 实际应用 | 结果/限制 |
 |---|---|---|
 | find-skills | 本地设计技能筛选、SkillHub搜索与安装 | 五个指定包和wxa validator已安装，版本见项目锁文件 |
-| reactbits-builder | 官方registry获取SpotlightCard并接入React工作台；Motion阶段过渡 | 生产构建、桌面和390px交互验证通过，保留原许可证 |
+| miniprogram-development | 原生页面结构、微信开发者工具、局域网预览、WXML/WXSS检查 | 9页原生编译与人工真机流程 |
 | frontend-design | 校园建筑场景、四阶段轨道、颜色与字体层级 | docs/visual-system.md |
 | Responsive Design / ui-design | 移动布局、触控、焦点样式、减少动态、对话框键盘操作 | 浏览器无横向溢出，完整闭环通过 |
 | miniprogram-development | 原生TS七页、真实AppID、原生云身份适配、自定义tabBar | TS/页面结构/WXML/WXSS官方编译器通过；IDE整包及真机待验 |
@@ -18,4 +18,4 @@
 
 恢复水印工具时，下载guillaumemeyer/watermarks-remover固定提交`c5297e9e69fec0779c29127c7892427e673fafd9`并审查，仅运行其service HTTP服务；不要执行与资产处理无关的目录。图像资源处理脚本位于tools/watermarks-remover/。
 
-社区技能与React Bits仍遵循各自许可证，根Apache-2.0仅适用于本项目原创代码。技能不是项目运行时依赖，公共仓库通过锁文件与安装脚本记录来源，避免重新分发未知授权的第三方文档。
+社区技能保留各自许可证，根Apache-2.0仅适用于本项目原创代码。技能不是项目运行时依赖，公共仓库通过锁文件与安装脚本记录来源，避免重新分发未知授权的第三方文档。
