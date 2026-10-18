@@ -33,7 +33,7 @@ npm run dev:miniapp
 
 启用模型：在本地`.env`设置`AI_MODE=live`、AI_BASE_URL、AI_API_KEY、AI_MODEL_MAX、AI_VISION_MODEL。所有模型ID可替换；只有配置且实际调用成功才显示实时AI。模型与图片生成密钥分离。
 
-微信开发者工具导入`miniapp/`。AppID：`wx71016248d99d9bd4`。服务地址与身份模式在`miniapp/config.ts`；真机需配置自己的HTTPS合法域名，不能用手机的127.0.0.1访问电脑服务。
+微信开发者工具导入`miniapp/`。AppID：`wx71016248d99d9bd4`。当前服务地址为`https://cloud.yuhaocloud.cn/campuspilot-api`，身份模式和接口地址在`miniapp/config.ts`；小程序后台需要配置`cloud.yuhaocloud.cn`为合法域名。
 
 同一Wi-Fi开发验证可运行`npm run prepare:lan`，生成独立的局域网预览包，保持源码默认地址不变。手机先验证health，再扫描预览二维码并开启开发调试；步骤见[部署文档](docs/deployment.md)。正式版本使用HTTPS合法域名。
 

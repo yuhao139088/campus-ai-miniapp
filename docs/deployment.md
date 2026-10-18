@@ -12,7 +12,7 @@ npm run dev:miniapp
 
 后端监听8787。默认离线+本地持久化可演示全流程，但图像OCR需配置实际视觉模型。设置`AI_MODE=live`、AI_BASE_URL、AI_API_KEY、AI_MODEL_MAX和AI_VISION_MODEL后启用实时模型。DEMO_MODE只控制演示身份，不会强制关闭AI。
 
-微信开发者工具导入`miniapp/`，AppID已配置`wx71016248d99d9bd4`。`miniapp/config.ts`默认本机127.0.0.1地址、演示身份；真机无法访问电脑的127.0.0.1，部署后替换为自己的HTTPS服务域名，在小程序后台配置request/uploadFile合法域名。普通小程序不需要平台AI开发模式扩展。
+微信开发者工具导入`miniapp/`，AppID已配置`wx71016248d99d9bd4`。当前小程序默认使用`https://cloud.yuhaocloud.cn/campuspilot-api`，服务器已通过现有Nginx HTTPS站点反代到Node服务；需要在小程序后台将`cloud.yuhaocloud.cn`加入request/uploadFile合法域名。普通小程序不需要平台AI开发模式扩展。
 
 TypeScript由项目脚本显式编译：setup自动生成11个运行JS及sourceMap；开发期间运行`npm run dev:miniapp`监听TS修改。生成文件位于TS旁并由Git忽略，IDE直接加载JS，不再依赖其TypeScript插件。源码包需先setup/build；后续交付包会附带生成文件，便于直接导入。
 
@@ -62,7 +62,7 @@ GitHub Actions全新Linux环境已通过Node服务Docker构建、启动与health
 
 ## 服务器阶段
 
-用户提供IP/域名之后再部署。本轮未向服务器部署、未上传或发布小程序，也未部署云函数。上线前注入自己的长期服务凭据、持久化卷、HTTPS反代与合法域名，关闭演示身份，设置NODE_ENV=production与随机SESSION_SECRET；真实身份使用wx.login+AppSecret或CloudBase身份桥接。
+当前已部署IP为`101.35.250.178`、域名为`cloud.yuhaocloud.cn`的staging后端，API路径为`/campuspilot-api/`。后端使用独立systemd服务`campuspilot.service`和`/opt/campuspilot`目录，没有覆盖已有Nginx根站点。当前仍为演示身份staging；正式生产需注入长期凭据、关闭演示身份、配置真实微信AppSecret或CloudBase身份桥接，并完成小程序后台合法域名和上传白名单。
 
 云函数campuspilot-session需在同一小程序关联环境部署。WX_APPID和WX_BRIDGE_SECRET由服务端与云函数共同配置，不放小程序代码。使用`tcb fn`对应命令，先查看当前CLI帮助；不使用通用`tcb deploy`。
 
