@@ -62,7 +62,7 @@ GitHub Actions全新Linux环境已通过Node服务Docker构建、启动与health
 
 ## 服务器阶段
 
-当前已部署IP为`101.35.250.178`、域名为`cloud.yuhaocloud.cn`的staging后端，API路径为`/campuspilot-api/`。后端使用独立systemd服务`campuspilot.service`和`/opt/campuspilot`目录，没有覆盖已有Nginx根站点。当前仍为演示身份staging；正式生产需注入长期凭据、关闭演示身份、配置真实微信AppSecret或CloudBase身份桥接，并完成小程序后台合法域名和上传白名单。
+当前已部署IP为`101.35.250.178`、域名为`cloud.yuhaocloud.cn`的后端，API路径为`/campuspilot-api/`。后端使用独立systemd服务`campuspilot.service`和`/opt/campuspilot`目录，没有覆盖已有Nginx根站点。服务器已注入微信AppSecret并关闭演示身份，`/api/auth/wechat`使用`wx.login` code交换会话；小程序后台仍需由管理员完成`cloud.yuhaocloud.cn`合法域名配置，真实微信 code 才能在真机完成登录。
 
 云函数campuspilot-session需在同一小程序关联环境部署。WX_APPID和WX_BRIDGE_SECRET由服务端与云函数共同配置，不放小程序代码。使用`tcb fn`对应命令，先查看当前CLI帮助；不使用通用`tcb deploy`。
 
